@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflu - 极简主义编程语言</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#333333',
+                        accent: '#FF4D4F',
+                        neutral: '#F5F7FA',
+                        dark: '#1D2129'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-balance {
+                text-wrap: balance;
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .bg-gradient-blue {
+                background: linear-gradient(135deg, #165DFF 0%, #0A2463 100%);
+            }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="font-inter bg-white text-dark antialiased">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-tight flex items-center">
+                <span class="text-primary mr-1"><i class="fa fa-code"></i></span>
+                <span>Netflu</span>
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#features" class="text-sm uppercase tracking-widest hover:text-primary transition-colors">特性</a>
+                <a href="#docs" class="text-sm uppercase tracking-widest hover:text-primary transition-colors">文档</a>
+                <a href="#examples" class="text-sm uppercase tracking-widest hover:text-primary transition-colors">示例</a>
+                <a href="#community" class="text-sm uppercase tracking-widest hover:text-primary transition-colors">社区</a>
+                <a href="#download" class="text-sm uppercase tracking-widest hover:text-primary transition-colors">下载</a>
+            </nav>
+            <button id="menu-toggle" class="md:hidden text-xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden">
+        <div class="container mx-auto px-6 py-12">
+            <div class="flex justify-end mb-12">
+                <button id="close-menu" class="text-xl">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <nav class="flex flex-col space-y-6">
+                <a href="#features" class="text-2xl font-medium hover:text-primary transition-colors">特性</a>
+                <a href="#docs" class="text-2xl font-medium hover:text-primary transition-colors">文档</a>
+                <a href="#examples" class="text-2xl font-medium hover:text-primary transition-colors">示例</a>
+                <a href="#community" class="text-2xl font-medium hover:text-primary transition-colors">社区</a>
+                <a href="#download" class="text-2xl font-medium hover:text-primary transition-colors">下载</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 英雄区域 -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+        <div class="absolute inset-0 bg-neutral -z-10"></div>
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-blue opacity-5 -z-10"></div>
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-tight mb-6 text-balance">
+                        简单、高效、<br>现代的<span class="text-primary">编程语言</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-secondary mb-8 max-w-xl">
+                        Netflu 融合了极简的语法和强大的功能，让编程变得更加愉悦和高效。适用于前端、后端、移动应用和数据科学。
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#download" class="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-md transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:shadow-xl transform hover:-translate-y-1 text-center">
+                            开始使用
+                        </a>
+                        <a href="#docs" class="bg-white hover:bg-gray-50 text-primary border border-primary font-medium py-3 px-8 rounded-md transition-all duration-300 shadow-md hover:shadow-lg text-center">
+                            查看文档
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="bg-white rounded-xl shadow-2xl p-6 animate-float">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            </div>
+                            <div class="ml-4 text-sm text-gray-500">netflu_example.nf</div>
+                        </div>
+                        <pre class="text-gray-800 bg-gray-50 p-4 rounded-lg text-sm overflow-x-auto">
+<span class="text-blue-600">func</span> <span class="text-purple-600">main</span>() {
+  <span class="text-blue-600">let</span> greeting = <span class="text-green-600">"Hello, Netflu!"</span>
+  <span class="text-blue-600">let</span> numbers = [1, 2, 3, 4, 5]
+  
+  <span class="text-blue-600">for</span> num <span class="text-blue-600">in</span> numbers {
+    <span class="text-purple-600">print</span>(greeting + <span class="text-green-600">" 数字: "</span> + num)
+  }
+  
+  <span class="text-blue-600">let</span> sum = numbers.<span class="text-purple-600">reduce</span>(0) { acc, num <span class="text-blue-600">=></span> acc + num }
+  <span class="text-purple-600">print</span>(<span class="text-green-600">"总和: "</span> + sum)
+  
+  <span class="text-blue-600">return</span> 0
+}
+                        </pre>
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/10 rounded-full -z-10"></div>
+                    <div class="absolute -top-6 -right-6 w-40 h-40 bg-primary/10 rounded-full -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特性区域 -->
+    <section id="features" class="py-20 md:py-32">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">强大特性</h2>
+                <p class="text-secondary max-w-2xl mx-auto">Netflu 结合了现代编程语言的最佳特性，为开发者提供简洁而强大的工具集</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <i class="fa fa-bolt text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">高性能</h3>
+                    <p class="text-secondary">通过即时编译技术，Netflu 代码能够接近原生性能运行，满足高性能应用需求。</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <i class="fa fa-code text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">极简语法</h3>
+                    <p class="text-secondary">精心设计的简洁语法，减少样板代码，提高开发效率，让你专注于解决问题。</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <i class="fa fa-shield text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">类型安全</h3>
+                    <p class="text-secondary">静态类型系统结合类型推导，在编译时捕获错误，同时保持代码简洁灵活。</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <i class="fa fa-plug text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">多范式</h3>
+                    <p class="text-secondary">支持面向对象、函数式和过程式编程范式，适应不同的编程风格和场景。</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <i class="fa fa-cubes text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">丰富标准库</h3>
+                    <p class="text-secondary">内置强大的标准库，涵盖网络、文件、并发、数据结构等，减少外部依赖。</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <i class="fa fa-globe text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">跨平台支持</h3>
+                    <p class="text-secondary">一次编写，到处运行。Netflu 支持 Windows、macOS、Linux 等多种操作系统。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 文档区域 -->
+    <section id="docs" class="py-20 md:py-32 bg-neutral">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">快速上手</h2>
+                <p class="text-secondary max-w-2xl mx-auto">从基础到高级，全面的文档帮助你快速掌握 Netflu 编程语言</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="bg-white p-8 rounded-xl shadow-xl">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fa fa-terminal text-primary"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">安装 Netflu</h3>
+                        </div>
+                        <pre class="bg-gray-50 p-4 rounded-lg text-sm overflow-x-auto mb-6">
+# macOS/Linux 通过包管理器安装
+curl -sSf https://netflu-lang.org/install.sh | sh
+
+# 或者手动下载二进制文件
+wget https://netflu-lang.org/releases/netflu-latest-x86_64-unknown-linux-gnu.tar.gz
+tar -xzf netflu-latest-x86_64-unknown-linux-gnu.tar.gz
+sudo mv netflu /usr/local/bin/
+
+# Windows 通过 PowerShell 安装
+iwr https://netflu-lang.org/install.ps1 -useb | iex
+                        </pre>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-xl shadow-xl mt-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fa fa-file-code-o text-primary"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">创建第一个程序</h3>
+                        </div>
+                        <pre class="bg-gray-50 p-4 rounded-lg text-sm overflow-x-auto mb-4">
+# 创建新项目
+netflu new hello-world
+cd hello-world
+
+# 编辑 main.nf 文件
+func main() {
+  print("Hello, Netflu!")
+  return 0
+}
+
+# 编译并运行
+netflu build
+./hello-world
+                        </pre>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">深入学习</h3>
+                    <div class="space-y-6">
+                        <a href="#" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/30">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                    <i class="fa fa-book text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold mb-2">语言指南</h4>
+                                    <p class="text-secondary">从基础语法到高级特性，全面了解 Netflu 语言</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/30">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                    <i class="fa fa-cogs text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold mb-2">标准库文档</h4>
+                                    <p class="text-secondary">探索 Netflu 丰富的标准库和内置函数</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/30">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                    <i class="fa fa-lightbulb-o text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold mb-2">最佳实践</h4>
+                                    <p class="text-secondary">学习如何编写高效、可维护的 Netflu 代码</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/30">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                    <i class="fa fa-wrench text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold mb-2">工具链参考</h4>
+                                    <p class="text-secondary">了解 Netflu 编译器、包管理器和调试工具的使用</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <a href="#" class="inline-flex items-center text-primary font-medium hover:underline">
+                            查看完整文档 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 示例区域 -->
+    <section id="examples" class="py-20 md:py-32">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">代码示例</h2>
+                <p class="text-secondary max-w-2xl mx-auto">探索 Netflu 语言的各种应用场景和编程模式</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                    <div class="bg-gray-100 p-4 flex items-center">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="ml-4 text-sm text-gray-500">web_server.nf</div>
+                    </div>
+                    <pre class="bg-gray-50 p-6 rounded-b-lg text-sm overflow-x-auto">
+<span class="text-blue-600">import</span> http
+
+<span class="text-blue-600">func</span> <span class="text-purple-600">main</span>() {
+  <span class="text-blue-600">let</span> server = http.<span class="text-purple-600">Server</span>(port: 8080)
+  
+  server.<span class="text-purple-600">get</span>(<span class="text-green-600">"/"</span>) { req, res <span class="text-blue-600">=></span>
+    res.<span class="text-purple-600">send</span>(<span class="text-green-600">"Hello, Netflu Web Server!"</span>)
+  }
+  
+  server.<span class="text-purple-600">get</span>(<span class="text-green-600">"/json"</span>) { req, res <span class="text-blue-600">=></span>
+    res.<span class="text-purple-600">json</span>({
+      message: <span class="text-green-600">"这是一个JSON响应"</span>,
+      data: [1, 2, 3, 4, 5]
+    })
+  }
+  
+  <span class="text-purple-600">print</span>(<span class="text-green-600">"服务器运行在 http://localhost:8080"</span>)
+  server.<span class="text-purple-600">start</span>()
+  <span class="text-blue-600">return</span> 0
+}
+                    </pre>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Web 服务器</h3>
+                        <p class="text-secondary">使用 Netflu 内置的 HTTP 模块快速搭建高性能 Web 服务器</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                    <div class="bg-gray-100 p-4 flex items-center">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="ml-4 text-sm text-gray-500">data_processing.nf</div>
+                    </div>
+                    <pre class="bg-gray-50 p-6 rounded-b-lg text-sm overflow-x-auto">
+<span class="text-blue-600">import</span> csv
+<span class="text-blue-600">import</span> math
+
+<span class="text-blue-600">func</span> <span class="text-purple-600">main</span>() {
+  <span class="text-blue-600">let</span> data = csv.<span class="text-purple-600">read</span>(<span class="text-green-600">"data.csv"</span>)
+  
+  <span class="text-blue-600">let</span> ages = data.<span class="text-purple-600">map</span> { row <span class="text-blue-600">=></span> row.<span class="text-purple-600">get</span>(<span class="text-green-600">"age"</span>).<span class="text-purple-600">parseInt</span>() }
+  <span class="text-blue-600">let</span> avg_age = ages.<span class="text-purple-600">reduce</span>(0) { acc, age <span class="text-blue-600">=></span> acc + age } / ages.<span class="text-purple-600">len</span>()
+  
+  <span class="text-blue-600">let</span> filtered = data.<span class="text-purple-600">filter</span> { row <span class="text-blue-600">=></span>
+    row.<span class="text-purple-600">get</span>(<span class="text-green-600">"age"</span>).<span class="text-purple-600">parseInt</span>() > 30
+  }
+  
+  csv.<span class="text-purple-600">write</span>(<span class="text-green-600">"filtered_data.csv"</span>, filtered)
+  
+  <span class="text-purple-600">print</span>(<span class="text-green-600">"平均年龄: "</span> + avg_age.<span class="text-purple-600">toString</span>())
+  <span class="text-purple-600">print</span>(<span class="text-green-600">"过滤后的数据已保存到 filtered_data.csv"</span>)
+  
+  <span class="text-blue-600">return</span> 0
+}
+                    </pre>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">数据处理</h3>
+                        <p class="text-secondary">读取 CSV 文件，进行数据处理和分析，并将结果保存到新文件</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                    <div class="bg-gray-100 p-4 flex items-center">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="ml-4 text-sm text-gray-500">async_example.nf</div>
+                    </div>
+                    <pre class="bg-gray-50 p-6 rounded-b-lg text-sm overflow-x-auto">
+<span class="text-blue-600">import</span> http
+<span class="text-blue-600">import</span> time
+
+<span class="text-blue-600">async func</span> <span class="text-purple-600">fetchData</span>(url: <span class="text-blue-600">string</span>) {
+  <span class="text-blue-600">let</span> response = <span class="text-blue-600">await</span> http.<span class="text-purple-600">getAsync</span>(url)
+  <span class="text-blue-600">return</span> response.<span class="text-purple-600">body</span>
+}
+
+<span class="text-blue-600">async func</span> <span class="text-purple-600">main</span>() {
+  <span class="text-blue-600">let</span> start = time.<span class="text-purple-600">now</span>()
+  
+  <span class="text-blue-600">let</span> [data1, data2, data3] = <span class="text-blue-600">await</span> <span class="text-blue-600">Promise</span>.<span class="text-purple-600">all</span>([
+    <span class="text-purple-600">fetchData</span>(<span class="text-green-600">"https://api.example.com/data1"</span>),
+    <span class="text-purple-600">fetchData</span>(<span class="text-green-600">"https://api.example.com/data2"</span>),
+    <span class="text-purple-600">fetchData</span>(<span class="text-green-600">"https://api.example.com/data3"</span>)
+  ])
+  
+  <span class="text-purple-600">print</span>(data1.<span class="text-purple-600">length</span>)
+  <span class="text-purple-600">print</span>(data2.<span class="text-purple-600">length</span>)
+  <span class="text-purple-600">print</span>(data3.<span class="text-purple-600">length</span>)
+  
+  <span class="text-blue-600">let</span> end = time.<span class="text-purple-600">now</span>()
+  <span class="text-purple-600">print</span>(<span class="text-green-600">"总耗时: "</span> + (end - start).<span class="text-purple-600">toString</span>() + <span class="text-green-600">"ms"</span>)
+  
+  <span class="text-blue-600">return</span> 0
+}
+                    </pre>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">异步编程</h3>
+                        <p class="text-secondary">使用 async/await 语法进行高效的异步操作，提升程序性能</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                    <div class="bg-gray-100 p-4 flex items-center">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="ml-4 text-sm text-gray-500">oop_example.nf</div>
+                    </div>
+                    <pre class="bg-gray-50 p-6 rounded-b-lg text-sm overflow-x-auto">
+<span class="text-blue-600">class</span> <span class="text-purple-600">Shape</span> {
+  <span class="text-blue-600">public</span> color: <span class="text-blue-600">string</span>
+  
+  <span class="text-blue-600">constructor</span>(color: <span class="text-blue-600">string</span>) {
+    <span class="text-blue-600">this</span>.color = color
+  }
+  
+  <span class="text-blue-600">public func</span> <span class="text-purple-600">describe</span>() {
+    <span class="text-purple-600">print</span>(<span class="text-green-600">"这是一个"</span> + <span class="text-blue-600">this</span>.color + <span class="text-green-600">"的形状"</span>)
+  }
+  
+  <span class="text-blue-600">public abstract func</span> <span class="text-purple-600">area</span>(): <span class="text-blue-600">number</span>
+}
+
+<span class="text-blue-600">class</span> <span class="text-purple-600">Circle</span> <span class="text-blue-600">extends</span> <span class="text-purple-600">Shape</span> {
+  <span class="text-blue-600">private</span> radius: <span class="text-blue-600">number</span>
+  
+  <span class="text-blue-600">constructor</span>(color: <span class="text-blue-600">string</span>, radius: <span class="text-blue-600">number</span>) {
+    <span class="text-blue-600">super</span>(color)
+    <span class="text-blue-600">this</span>.radius = radius
+  }
+  
+  <span class="text-blue-600">public override func</span> <span class="text-purple-600">area</span>() {
+    <span class="text-blue-600">return</span> math.<span class="text-purple-600">PI</span> * <span class="text-blue-600">this</span>.radius * <span class="text-blue-600">this</span>.radius
+  }
+}
+
+<span class="text-blue-600">func</span> <span class="text-purple-600">main</span>() {
+  <span class="text-blue-600">let</span> circle = <span class="text-blue-600">new</span> <span class="text-purple-600">Circle</span>(<span class="text-green-600">"红色"</span>, 5)
+  circle.<span class="text-purple-600">describe</span>()
+  <span class="text-purple-600">print</span>(<span class="text-green-600">"面积: "</span> + circle.<span class="text-purple-600">area</span>().<span class="text-purple-600">toString</span>())
+  
+  <span class="text-blue-600">return</span> 0
+}
+                    </pre>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">面向对象编程</h3>
+                        <p class="text-secondary">使用类、继承和多态构建结构化的代码，提高代码复用性</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社区区域 -->
+    <section id="community" class="py-20 md:py-32 bg-neutral">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">加入社区</h2>
+                <p class="text-secondary max-w-2xl mx-auto">与全球 Netflu 开发者一起交流、学习和成长</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-github text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">GitHub</h3>
+                    <p class="text-secondary mb-6">在 GitHub 上参与项目开发，提交问题和代码贡献</p>
+                    <a href="#" class="inline-flex items-center text-primary font-medium hover:underline">
+                        访问仓库 <i class="fa fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-slack text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Slack 社区</h3>
+                    <p class="text-secondary mb-6">加入我们的 Slack 社区，与其他开发者实时交流</p>
+                    <a href="#" class="inline-flex items-center text-primary font-medium hover:underline">
+                        获取邀请 <i class="fa fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-twitter text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Twitter</h3>
+                    <p class="text-secondary mb-6">关注我们的 Twitter，获取最新动态和更新</p>
+                    <a href="#" class="inline-flex items-center text-primary font-medium hover:underline">
+                        关注 @netflu_lang <i class="fa fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-16 bg-white p-8 rounded-xl shadow-xl">
+                <h3 class="text-2xl font-bold mb-6 text-center">开发者声音</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <img src="https://picsum.photos/id/1005/40/40" alt="开发者头像" class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-medium">李明</h4>
+                                <p class="text-sm text-secondary">全栈开发者</p>
+                            </div>
+                        </div>
+                        <p class="text-secondary">"Netflu 的语法简洁明了，让我可以更快地实现想法。异步编程模型特别棒，性能也很出色！"</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <img src="https://picsum.photos/id/1012/40/40" alt="开发者头像" class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-medium">张婷</h4>
+                                <p class="text-sm text-secondary">数据科学家</p>
+                            </div>
+                        </div>
+                        <p class="text-secondary">"作为数据科学家，我很喜欢 Netflu 的数据处理能力和简洁的语法。它让我的分析工作更加高效。"</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <img src="https://picsum.photos/id/1025/40/40" alt="开发者头像" class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-medium">王强</h4>
+                                <p class="text-sm text-secondary">后端架构师</p>
+                            </div>
+                        </div>
+                        <p class="text-secondary">"Netflu 的类型系统和错误处理机制帮助我们构建了更加健壮的后端系统，团队开发效率显著提升。"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 下载区域 -->
+    <section id="download" class="py-20 md:py-32">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">开始使用 Netflu</h2>
+                <p class="text-secondary max-w-2xl mx-auto">下载最新版本的 Netflu 开发工具链，开始你的编程之旅</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
+                    <div class="bg-primary p-6 text-white">
+                        <h3 class="text-xl font-semibold">macOS</h3>
+                        <p class="mt-2 opacity-80">适用于 macOS 10.14 及以上版本</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-lg font-medium">Netflu 1.2.0</span>
+                            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">最新版本</span>
+                        </div>
+                        <div class="space-y-4">
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                                <i class="fa fa-download text-primary mr-3"></i>
+                                <span>安装包 (.pkg)</span>
+                            </a>
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                                <i class="fa fa-file-archive-o text-primary mr-3"></i>
+                                <span>压缩包 (.tar.gz)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
+                    <div class="bg-primary p-6 text-white">
+                        <h3 class="text-xl font-semibold">Windows</h3>
+                        <p class="mt-2 opacity-80">适用于 Windows 10 及以上版本</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-lg font-medium">Netflu 1.2.0</span>
+                            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">最新版本</span>
+                        </div>
+                        <div class="space-y-4">
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                                <i class="fa fa-download text-primary mr-3"></i>
+                                <span>安装程序 (.msi)</span>
+                            </a>
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                                <i class="fa fa-file-archive-o text-primary mr-3"></i>
+                                <span>压缩包 (.zip)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
+                    <div class="bg-primary p-6 text-white">
+                        <h3 class="text-xl font-semibold">Linux</h3>
+                        <p class="mt-2 opacity-80">适用于 x86_64 架构的 Linux 系统</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-lg font-medium">Netflu 1.2.0</span>
+                            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">最新版本</span>
+                        </div>
+                        <div class="space-y-4">
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                                <i class="fa fa-download text-primary mr-3"></i>
+                                <span>Debian 包 (.deb)</span>
+                            </a>
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                                <i class="fa fa-file-archive-o text-primary mr-3"></i>
+                                <span>Red Hat 包 (.rpm)</span>
+                            </a>
+                            <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                                <i class="fa fa-file-archive-o text-primary mr-3"></i>
+                                <span>压缩包 (.tar.gz)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-secondary mb-6">需要其他平台的支持或从源码编译？</p>
+                <a href="#" class="inline-flex items-center text-primary font-medium hover:underline">
+                    查看详细安装指南 <i class="fa fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div>
+                    <a href="#" class="text-2xl font-bold tracking-tight flex items-center mb-6">
+                        <span class="text-primary mr-1"><i class="fa fa-code"></i></span>
+                        <span>Netflu</span>
+                    </a>
+                    <p class="text-gray-400 mb-6">简单、高效、现代的编程语言</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-github text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-slack text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-youtube-play text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">资源</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">文档</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">教程</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">API 参考</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">示例代码</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">常见问题</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">社区</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Slack</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Stack Overflow</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">贡献指南</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">法律</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">许可协议</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">隐私政策</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">代码行为准则</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Netflu 编程语言. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.remove('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.add('py-4');
+            }
+        });
+        
+        // 移动端菜单
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeMenu = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+        });
+        
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.add('translate-x-full');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动菜单
+                    if (!mobileMenu.classList.contains('translate-x-full')) {
+                        mobileMenu.classList.add('translate-x-full');
+                    }
+                }
+            });
+        });
+        
+        // 滚动动画
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-fade-in, .animate-slide-up');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // 初始化动画元素
+        document.querySelectorAll('.animate-fade-in, .animate-slide-up').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+        });
+        
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>    
